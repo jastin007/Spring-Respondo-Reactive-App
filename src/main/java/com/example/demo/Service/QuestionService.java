@@ -3,9 +3,11 @@ package com.example.demo.Service;
 import com.example.demo.Dto.QuestionRequestDTO;
 import com.example.demo.Dto.QuestionResponseDTO;
 import com.example.demo.Models.Question;
+import com.example.demo.Producer.KafkaEventProducer;
 import com.example.demo.Repositories.QuestionRepository;
 import com.example.demo.Utils.CursorUtils;
 import com.example.demo.adapter.QuestionAdapter;
+import com.example.demo.events.ViewCountEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.swing.text.View;
 import java.time.LocalDateTime;
 
 @Service
@@ -24,6 +27,7 @@ public class QuestionService implements IQuestionService {
 
     private final QuestionRepository questionRepository;
 
+    private final KafkaEventProducer kafkaEventProducer;
 
     @Override
     public Mono<QuestionResponseDTO> createQuestion(QuestionRequestDTO questionRequestDTO) {
@@ -42,8 +46,13 @@ public class QuestionService implements IQuestionService {
     @Override
     public Mono<QuestionResponseDTO> getQuestionById(String id) {
         return questionRepository.findById(id).map(QuestionAdapter::toquestionResponseDTO)
-                .doOnSuccess(response -> System.out.println("id found sucessfully: " + response))
-                .doOnError(error -> System.out.println("id not found: " + error));
+//                .doOnSuccess(response -> System.out.println("id found sucessfully: " + response))
+                .doOnError(error -> System.out.println("id not found: " + error))
+                .doOnSuccess(response->{
+                    System.out.println("Question fetched successfully: "+response);
+                    ViewCountEvent viewCountEvent = new ViewCountEvent(id,"question",LocalDateTime.now());
+                    kafkaEventProducer.publishViewCountEvent(viewCountEvent);
+                });
     }
 
     @Override
