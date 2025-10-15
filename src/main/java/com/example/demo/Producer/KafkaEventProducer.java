@@ -14,6 +14,7 @@ public class KafkaEventProducer {
 
 
     public void publishViewCountEvent(ViewCountEvent viewCountEvent){
+        // target id that can be a key
           kafkaTemplate.send(KafkaConfig.TOPIC_NAME, viewCountEvent.getTargetId(), viewCountEvent)
                   .whenComplete((result, err)->{
                      if(err !=null){
