@@ -2,12 +2,15 @@ package com.example.demo.Controllers;
 
 import com.example.demo.Dto.QuestionRequestDTO;
 import com.example.demo.Dto.QuestionResponseDTO;
+import com.example.demo.Models.QuestionElasticDocument;
 import com.example.demo.Service.IQuestionService;
 import com.example.demo.adapter.QuestionAdapter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -47,4 +50,11 @@ public class QuestionController {
     ){
         return questionService.SearchByQuestion(query,page,size);
     }
+
+    @GetMapping("/elasticsearch")
+    public Flux<QuestionElasticDocument> searchQuestionsByElasticSearch(@RequestParam String query){
+        return questionService.searchQuestionsByElasticSearch(query);
+    }
+
+
 }

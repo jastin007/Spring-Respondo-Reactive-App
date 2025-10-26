@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "Likes")
+@Document(collection = "likes")
 public class Like {
    @Id
     private String id;
