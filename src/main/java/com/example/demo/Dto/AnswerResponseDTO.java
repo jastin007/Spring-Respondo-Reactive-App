@@ -1,5 +1,6 @@
 package com.example.demo.Dto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,9 +12,9 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class QuestionResponseDTO {
+public class AnswerResponseDTO {
     private String id;
-    private String title;
     private String content;
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

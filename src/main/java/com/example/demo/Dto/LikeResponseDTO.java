@@ -11,9 +11,11 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class QuestionResponseDTO {
+public class LikeResponseDTO {
+
     private String id;
-    private String title;
-    private String content;
+    private String targetId;
+    private String targetType;
+    private Boolean isLike;
     private LocalDateTime createdAt;
 }

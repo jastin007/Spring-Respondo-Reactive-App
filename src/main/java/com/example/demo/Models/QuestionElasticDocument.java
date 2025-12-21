@@ -1,19 +1,22 @@
-package com.example.demo.Dto;
+package com.example.demo.Models;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class QuestionResponseDTO {
+@Document(indexName= "questions")
+public class QuestionElasticDocument {
+
+    @Id
     private String id;
     private String title;
     private String content;
-    private LocalDateTime createdAt;
+
 }
