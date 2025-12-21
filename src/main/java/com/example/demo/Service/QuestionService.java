@@ -55,7 +55,6 @@ public class QuestionService implements IQuestionService {
                 })
                 .doOnSuccess(response -> System.out.println("Question created sucessfully: " + response))
                 .doOnError(error -> System.out.println("Error creating question: " + error));
-
     }
 
     @Override
@@ -99,7 +98,6 @@ public class QuestionService implements IQuestionService {
     public Mono<Void> deleteQuestionById(String id) {
 //        return questionRepository.deleteById(id).doOnError(error -> System.out.println("Error deleting " + id + ": " + error.getMessage()))
 //                .doOnTerminate(() -> System.out.println("Delete process completed for id: " + id));
-
         return questionRepository.existsById(id).flatMap(exits -> {
             if (exits) {
                 return questionRepository.deleteById(id).doOnTerminate(() -> System.out.println("Delete process completed for id: " + id));
@@ -116,6 +114,7 @@ public class QuestionService implements IQuestionService {
                 .map(QuestionAdapter::toquestionResponseDTO)
                 .doOnError(error -> System.out.println("Error searching questions:" + error))
                 .doOnComplete(() -> System.out.println("Questions searched successfully: "));
+
     }
 
     public Flux<QuestionElasticDocument> searchQuestionsByElasticSearch(String query) {
